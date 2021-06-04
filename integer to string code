@@ -1,0 +1,119 @@
+#include <iostream>
+#include <string>
+
+const std::string ones[]{"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+const std::string teens[]{"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+const std::string tens[]{"", "ten", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+const std::string bignos[]{"hundred", "thousand", "million", "billion"};
+
+std::string word(long long n)
+{
+
+    if (n < 9 && n >= 0)
+    {
+        return ones[n];
+    }
+    else if (n >= 10 && n < 20)
+    {
+        return teens[n - 10];
+    }
+    else if (n >= 20 && n < 100)
+    {
+        return (tens[n / 10] + " " + ones[n - (n / 10) * 10]);
+    }
+    else
+        return " ";
+}
+std::string bigwords(long long n)
+{
+    if (n == 0)
+        return " ";
+    else if (n >= 100 && n < 1000)
+
+        return (ones[n / 100] + " " + bignos[0] + " " + " " + word(n - (n / 100) * 100));
+    else
+        return " ";
+}
+
+std::string hugewords(long long n)
+{
+    if (n == 0)
+        return " ";
+    else if (n > 0 && n < 1000)
+        return hugewords(n);
+
+    else if (n >= 1000 && n < 1000000)
+    {
+        long long a = n / 1000;
+        if (a > 0 && a < 100)
+            return (word(a) + " " + bignos[1] + " " + bigwords(n - 1000 * a));
+        if (a >= 100 && a < 1000)
+            return (bigwords(a) + " " + bignos[1] + " " + bigwords(n - 1000 * a));
+        else
+            return " ";
+    }
+
+    else
+        return " ";
+}
+std::string millions(long long n)
+{
+    long long a = n / 1000000;
+    if (n == 0)
+        return " ";
+    else if (a >= 0 && a < 1)
+        return hugewords(n);
+
+    else if (a >= 1 && a < 100)
+        return (word(a) + " " + bignos[2] + " " + hugewords(n - 1000000 * a));
+    else if (a >= 100 && a < 1000)
+        return (bigwords(a) + " " + bignos[2] + " " + hugewords(n - 1000000 * a));
+    else
+        return " ";
+}
+std::string billions(long long n)
+{
+    long long a = n / 1000000000;
+    if (a >= 1 && a < 100)
+        return (word(a) + " " + bignos[3] + " " + millions(n - 1000000000 * a));
+    else if (a >= 100 && a < 1000)
+        return (bigwords(a) + " " + bignos[3] + " " + millions(n - 1000000000 * a));
+    else if (a >= 1000)
+        return " chill bruh its too much ";
+    else
+        return " ";
+}
+
+void enter()
+{
+    long long num;
+    std::cout << "Enter a no.: " << std::endl;
+    std::cin >> num;
+    if (num >= 0 && num < 100)
+    {
+        std::cout << word(num) << std::endl;
+    }
+    else if (num >= 100 && num < 1000)
+    {
+        std::cout
+            << bigwords(num) << std::endl;
+    }
+    else if (num >= 1000 && num < 1000000)
+    {
+        std::cout << hugewords(num) << std::endl;
+    }
+    else if (num >= 1000000 && num < 1000000000)
+    {
+        std::cout << millions(num) << std::endl;
+    }
+    else if (num >= 1000000000)
+    {
+        std::cout << billions(num) << std::endl;
+    }
+}
+int main()
+{
+
+    enter();
+    return 0;
+}
